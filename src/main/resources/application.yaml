@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: swarn-k8s-microservice
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:default-secret}
