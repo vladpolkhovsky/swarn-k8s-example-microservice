@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "by.vpolkhovsky"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.1"
 
 java {
 	toolchain {
@@ -19,12 +19,15 @@ repositories {
 
 dependencies {
 	compileOnly("org.projectlombok:lombok:1.18.38")
+
 	annotationProcessor("org.projectlombok:lombok:1.18.38")
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-hateoas")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.mapstruct:mapstruct:1.6.3")
 
 	implementation("org.apache.commons:commons-lang3:3.17.0")
 	implementation("io.jsonwebtoken:jjwt-api:0.12.6")

@@ -1,0 +1,47 @@
+version: '3.8'  # Минимальная версия для Swarm-режима
+
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+    environment:
+      - "spring.datasource.username=postgres"
+      - "spring.datasource.password=postgres"
+      - "spring.datasource.url=jdbc:postgresql://db:5432/example_db"
+      - "app.jwt.secret=z1OtmHiiIFG3Wiz7V3IXUHpm2Txgqaf7nISCBlK3CjAwMeYpIfXFxBd4NaQ57m8V"
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '0.8'
+          memory: 512M
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: example_db
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  pg-data: {}

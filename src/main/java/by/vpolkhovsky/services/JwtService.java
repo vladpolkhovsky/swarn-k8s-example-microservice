@@ -1,9 +1,9 @@
 package by.vpolkhovsky.services;
 
 import by.vpolkhovsky.config.ApplicationProperties;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -19,43 +19,42 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtService {
 
-    private static final long ACCESS_TOKEN_VALIDITY = 86400000;
+    private static final long ACCESS_TOKEN_VALIDITY = 86400000; // 24 hours in milliseconds
 
-    private ApplicationProperties properties;
-
+    private final ApplicationProperties properties;
     private SecretKey secretKey;
+    private JwtParser jwtParser;
 
     @PostConstruct
     public void init() {
-        secretKey = Keys.hmacShaKeyFor(properties.getJwt().secret().getBytes(StandardCharsets.UTF_8));
+        String secret = properties.getJwt().secret();
+        if (StringUtils.isBlank(secret)) {
+            throw new IllegalArgumentException("JWT secret is not configured");
+        }
+        secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        jwtParser = Jwts.parser().verifyWith(secretKey).build();
     }
 
     public String generateToken(UserDetails userDetails) {
         var currentTime = new Date();
         return Jwts.builder()
-            .claims()
-            .issuedAt(currentTime)
-            .expiration(new Date(currentTime.getTime() + ACCESS_TOKEN_VALIDITY))
-            .and()
-            .subject(userDetails.getUsername())
-            .signWith(secretKey)
-            .compact();
+                .subject(userDetails.getUsername())
+                .issuedAt(currentTime)
+                .expiration(new Date(currentTime.getTime() + ACCESS_TOKEN_VALIDITY))
+                .signWith(secretKey)
+                .compact();
     }
 
     public boolean validateToken(String token) {
-        if (StringUtils.isBlank(extractUsername(token))) {
-            throw new IllegalArgumentException("null username");
+        try {
+            Claims claims = extractAllClaims(token);
+            return !isTokenExpired(claims) &&
+                    StringUtils.isNotBlank(claims.getSubject());
+        } catch (SecurityException | MalformedJwtException |
+                 ExpiredJwtException | UnsupportedJwtException |
+                 IllegalArgumentException e) {
+            return false;
         }
-
-        var expiration = extractExpiration(token);
-        if (expiration == null) {
-            throw new IllegalArgumentException("null expiration date");
-        }
-        if (expiration.before(new Date())) {
-            throw new IllegalArgumentException("expired token");
-        }
-
-        return true;
     }
 
     public String extractUsername(String token) {
@@ -72,6 +71,10 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().decryptWith(secretKey).build().parseSignedClaims(token).getPayload();
+        return jwtParser.parseSignedClaims(token).getPayload();
+    }
+
+    private boolean isTokenExpired(Claims claims) {
+        return claims.getExpiration().before(new Date());
     }
 }

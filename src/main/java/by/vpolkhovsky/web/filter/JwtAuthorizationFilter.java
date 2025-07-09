@@ -1,4 +1,4 @@
-package by.vpolkhovsky.config;
+package by.vpolkhovsky.web.filter;
 
 import by.vpolkhovsky.services.CustomUserDetailsService;
 import by.vpolkhovsky.services.JwtService;

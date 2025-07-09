@@ -12,5 +12,6 @@ public class ApplicationProperties {
     private JwtProperties jwt;
 
     public record JwtProperties(String secret) {
+
     }
 }

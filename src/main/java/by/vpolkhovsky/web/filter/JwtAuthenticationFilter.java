@@ -1,4 +1,4 @@
-package by.vpolkhovsky.config;
+package by.vpolkhovsky.web.filter;
 
 import by.vpolkhovsky.dto.JwtToken;
 import by.vpolkhovsky.services.JwtService;
@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,13 +19,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtService jwtService, String filterProcessesUrl) {
-        this.authenticationManager = authenticationManager;
+        super(authenticationManager);
         this.jwtService = jwtService;
-
         setFilterProcessesUrl(filterProcessesUrl);
     }
 
@@ -32,7 +31,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 
     @Override
@@ -41,6 +40,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = jwtService.generateToken(userDetails);
 
         response.addHeader("Authorization", "Bearer " + token);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
         MAPPER.writeValue(response.getWriter(), new JwtToken(token));
 
         response.getWriter().flush();

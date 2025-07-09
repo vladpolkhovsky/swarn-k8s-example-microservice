@@ -1,7 +1,18 @@
 spring:
   application:
-    name: swarn-k8s-microservice
+    name: swarn-k8s-microservice-${random.uuid}
+
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/example_db
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: on
+    hibernate:
+      ddl-auto: update
+    show-sql: on
 
 app:
   jwt:
-    secret: ${JWT_SECRET:default-secret}
+    secret: ${JWT_SECRET:N99Kfn29kk1K5zslu16SsqxTg27mIyK4Nsm8AqQdUJ0jsuN67qM7iyfWfKYCOcHQ}
