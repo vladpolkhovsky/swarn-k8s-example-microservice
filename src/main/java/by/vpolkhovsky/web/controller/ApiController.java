@@ -27,7 +27,7 @@ public class ApiController {
 
     @GetMapping("/iam")
     public ResponseEntity<IamResponse> iam(@AuthenticationPrincipal JwtUserDetails jwtUserDetails) {
-        log.info("User [username={}] use endpoint /api/iam", jwtUserDetails.getUsername());
+        log.info("Application {}. User [username={}] use endpoint /api/iam", applicationProperties.getName(), jwtUserDetails.getUsername());
         return userRepository.findByUsername(jwtUserDetails.getUsername())
                 .map(user -> new IamResponse(applicationProperties.getName(), userMapper.map(user)))
                 .map(ResponseEntity::ok)
@@ -36,7 +36,7 @@ public class ApiController {
 
     @PostMapping("/echo")
     public ResponseEntity<EchoResponse> echo(@AuthenticationPrincipal JwtUserDetails jwtUserDetails, @RequestBody EchoRequest request) {
-        log.info("User [username={}] post message \"{}\"", jwtUserDetails.getUsername(), request.text());
+        log.info("Application {}. User [username={}] use endpoint /api/echo and post message \"{}\"", applicationProperties.getName(), jwtUserDetails.getUsername(), request.text());
         return userRepository.findByUsername(jwtUserDetails.getUsername())
                 .map(user -> new EchoResponse(applicationProperties.getName(), userMapper.map(user), request.text()))
                 .map(ResponseEntity::ok)
