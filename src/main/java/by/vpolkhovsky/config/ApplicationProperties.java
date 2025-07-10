@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
 
     private JwtProperties jwt;
+    private String name;
 
     public record JwtProperties(String secret) {
 
