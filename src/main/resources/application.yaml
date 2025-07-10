@@ -1,6 +1,6 @@
 spring:
   application:
-    name: swarm-k8s-microservice-${random.int(1000, 9999)}
+    name: swarm-k8s-microservice-${random.int(1000,9999)}
 
   datasource:
     username: postgres
