@@ -1,6 +1,6 @@
 services:
   app:
-    image: 185.159.128.138:5000/swarn-k8s-example-microservice:latest
+    image: 185.159.128.138:5000/swarm-k8s-example-microservice:latest
     environment:
       - "spring.datasource.username=postgres"
       - "spring.datasource.password=postgres"
