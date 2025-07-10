@@ -11,6 +11,8 @@ services:
         published: 8080
         protocol: tcp
         mode: host
+    profiles:
+      - service
 
   db:
     image: postgres:latest

@@ -29,6 +29,7 @@ public class ApiController {
 
     @GetMapping("/iam")
     public ResponseEntity<IamResponse> iam(@AuthenticationPrincipal JwtUserDetails jwtUserDetails) {
+        log.info("User [username={}] use endpoint /api/iam", jwtUserDetails.getUsername());
         return userRepository.findByUsername(jwtUserDetails.getUsername())
                 .map(user -> new IamResponse(appName, userMapper.map(user)))
                 .map(ResponseEntity::ok)
