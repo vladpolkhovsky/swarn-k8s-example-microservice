@@ -10,10 +10,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @ConfigurationPropertiesScan
 @EnableWebMvc
 @EnableJpaRepositories(basePackages = "by.vpolkhovsky.repository")
-public class SwarnK8sMicroserviceApplication {
+public class SwarmK8sMicroserviceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SwarnK8sMicroserviceApplication.class, args);
+        SpringApplication.run(SwarmK8sMicroserviceApplication.class, args);
     }
 
 }

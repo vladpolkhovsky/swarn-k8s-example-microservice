@@ -1,1 +1,1 @@
-rootProject.name = "swarn-k8s-microservice"
+rootProject.name = "swarm-k8s-microservice"
