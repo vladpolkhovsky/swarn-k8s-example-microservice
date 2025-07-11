@@ -4,7 +4,6 @@ random-source:
 spring:
   application:
     name: swarm-k8s-microservice-${random-source.random-int}
-
   datasource:
     username: postgres
     password: postgres
@@ -15,10 +14,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+  config:
+    import: "optional:configtree:/run/secrets/"
 
 logging:
   include-application-name: false
-
 
 app:
   name: ${spring.application.name}
