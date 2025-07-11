@@ -33,7 +33,7 @@ git clone https://github.com/vladpolkhovsky/swarn-k8s-example-microservice.git
 cd swarn-k8s-example-microservice
 
 docker build --tag swarm-k8s-example-microservice .
-docker tag swarn-k8s-example-microservice 185.159.128.138:5000/swarm-k8s-example-microservice
+docker tag swarm-k8s-example-microservice 185.159.128.138:5000/swarm-k8s-example-microservice
 docker push 185.159.128.138:5000/swarm-k8s-example-microservice
 
 #Инициализация кластера
@@ -43,3 +43,5 @@ docker swarm init --advertise-addr 185.159.128.138
 docker swarm join-token worker
 
 docker stack deploy -c docker-compose-swarm.yml swarm-stack
+
+echo "my-secret-username-for-database" | docker secret create spring/datasource/username -
