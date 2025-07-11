@@ -43,6 +43,3 @@ docker swarm init --advertise-addr 185.159.128.138
 docker swarm join-token worker
 
 docker stack deploy -c docker-compose-swarm.yml swarm-stack
-
-echo "my-secret-username-for-database" | docker secret create spring.datasource.username -
-echo "my-secret-password-for-database" | docker secret create spring.datasource.password -

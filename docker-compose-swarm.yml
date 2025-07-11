@@ -2,8 +2,8 @@ services:
   app:
     image: 185.159.128.138:5000/swarm-k8s-example-microservice:latest
     environment:
-    #  - "spring.datasource.username=postgres"
-    #  - "spring.datasource.password=postgres"
+      - "spring.datasource.username=postgres"
+      - "spring.datasource.password=postgres"
       - "spring.datasource.url=jdbc:postgresql://db:5432/example_db"
       - "app.jwt.secret=z1OtmHiiIFG3Wiz7V3IXUHpm2Txgqaf7nISCBlK3CjAwMeYpIfXFxBd4NaQ57m8V"
     ports:
@@ -24,19 +24,14 @@ services:
         limits:
           cpus: '0.8'
           memory: 512M
-    secrets:
-      - spring.datasource.username
-      - spring.datasource.password
     networks:
       - public
 
   db:
     image: postgres:latest
     environment:
-      #POSTGRES_USER: postgres
-      #POSTGRES_PASSWORD: postgres
-      POSTGRES_USER_FILE: /run/secret/spring.datasource.username
-      POSTGRES_PASSWORD_FILE: /run/secret/spring.datasource.password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: example_db
     volumes:
       - pg-data:/var/lib/postgresql/data
@@ -48,9 +43,6 @@ services:
       restart_policy:
         delay: 10s
         condition: on-failure
-    secrets:
-      - spring.datasource.username
-      - spring.datasource.password
     networks:
       - public
 
@@ -60,9 +52,3 @@ networks:
 
 volumes:
   pg-data: {}
-
-secrets:
-  spring.datasource.username:
-    external: true
-  spring.datasource.password:
-    external: true
