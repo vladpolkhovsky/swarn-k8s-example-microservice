@@ -44,5 +44,12 @@ docker swarm join-token worker
 
 docker stack deploy -c docker-compose-swarm.yml swarm-stack
 
-echo "my-secret-username-for-database" | docker secret create spring.datasource.username -
-echo "my-secret-password-for-database" | docker secret create spring.datasource.password -
+echo "my-secret-username-for-database" | docker secret create db_username -
+echo "my-secret-password-for-database" | docker secret create db_password -
+
+#ДОБАВИТЬ к app и закоментировать переменные
+    secrets:
+      - source: db_username
+        target: spring.datasource.username
+      - source: db_password
+        target: spring.datasource.password
