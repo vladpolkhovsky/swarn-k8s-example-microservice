@@ -7,10 +7,7 @@ services:
       - "spring.datasource.url=jdbc:postgresql://db:5432/example_db"
       - "app.jwt.secret=z1OtmHiiIFG3Wiz7V3IXUHpm2Txgqaf7nISCBlK3CjAwMeYpIfXFxBd4NaQ57m8V"
     ports:
-      - target: 8080
-        published: 8080
-        protocol: tcp
-        mode: host
+      - "8080:8080"
     profiles:
       - service
 
