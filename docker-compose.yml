@@ -22,9 +22,5 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
 
-networks:
-  default:
-    driver: bridge
-
 volumes:
   pg-data: {}
