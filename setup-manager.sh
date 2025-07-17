@@ -32,9 +32,8 @@ git clone https://github.com/vladpolkhovsky/swarn-k8s-example-microservice.git
 
 cd swarn-k8s-example-microservice
 
-docker build --tag swarm-k8s-example-microservice .
-docker tag swarm-k8s-example-microservice 185.159.128.138:5000/swarm-k8s-example-microservice
-docker push 185.159.128.138:5000/swarm-k8s-example-microservice
+docker build --tag vpolkhovsky/swarm-k8s-example-microservice .
+docker push vpolkhovsky/swarm-k8s-example-microservice
 
 #Инициализация кластера
 docker swarm init --advertise-addr 185.159.128.138
@@ -53,3 +52,9 @@ echo "my-secret-password-for-database" | docker secret create db_password -
         target: spring.datasource.username
       - source: db_password
         target: spring.datasource.password
+
+apt update
+apt install -y snapd
+snap install k8s --classic
+k8s bootstrap
+k8s status --wait-ready
