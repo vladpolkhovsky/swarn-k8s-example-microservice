@@ -1,6 +1,6 @@
 services:
   app:
-    build: Dockerfile
+    build: .
     environment:
       - "spring.datasource.username=postgres"
       - "spring.datasource.password=postgres"
