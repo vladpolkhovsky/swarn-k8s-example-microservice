@@ -37,7 +37,7 @@ services:
       POSTGRES_PASSWORD_FILE: /run/secrets/db_password
       POSTGRES_DB: example_db
     volumes:
-      - pg-data
+      - pg-data:/var/lib/postgresql/data
     deploy:
       replicas: 1
       placement:
