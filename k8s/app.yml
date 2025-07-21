@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-app
+  labels:
+    app: spring-boot-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot-app
+  template:
+    metadata:
+      labels:
+        app: spring-boot-app
+    spec:
+      containers:
+        - name: k8s-example-microservice
+          image: vpolkhovsky/swarm-k8s-example-microservice
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: app-config-dev
+          env:
+            - name: "spring.datasource.username"
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: app-secrets-dev
+            - name: "spring.datasource.password"
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: app-secrets-dev
