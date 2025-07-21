@@ -1,9 +1,7 @@
 services:
   app:
-    image: 185.159.128.138:5000/swarm-k8s-example-microservice:latest
+    image: vpolkhovsky/swarm-k8s-example-microservice:latest
     environment:
-    # - "spring.datasource.username=postgres"
-    # - "spring.datasource.password=postgres"
       - "spring.datasource.url=jdbc:postgresql://db:5432/example_db"
       - "app.jwt.secret=z1OtmHiiIFG3Wiz7V3IXUHpm2Txgqaf7nISCBlK3CjAwMeYpIfXFxBd4NaQ57m8V"
     ports:
@@ -35,13 +33,13 @@ services:
   db:
     image: postgres:latest
     environment:
-      #POSTGRES_USER: postgres
-      #POSTGRES_PASSWORD: postgres
       POSTGRES_USER_FILE: /run/secrets/db_username
       POSTGRES_PASSWORD_FILE: /run/secrets/db_password
       POSTGRES_DB: example_db
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - type: bind
+        source: "/mnt/pg-data-swarm"
+        target: "/var/lib/postgresql/data"
     deploy:
       replicas: 1
       placement:
@@ -61,9 +59,6 @@ services:
 networks:
   public:
     driver: overlay
-
-volumes:
-  pg-data: {}
 
 secrets:
   db_username:
