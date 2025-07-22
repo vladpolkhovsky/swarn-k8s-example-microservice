@@ -22,9 +22,9 @@ spec:
             - containerPort: 8080
           env:
             - name: "spring.datasource.username"
-              value: "username"
+              value: "postgres_username"
             - name: "spring.datasource.password"
-              value: "password"
+              value: "secret_password"
             - name: "spring.datasource.url"
               value: "jdbc:postgresql://postgres-service:5432/example_db"
             - name: "app.jwt.secret"
@@ -55,9 +55,9 @@ spec:
             - containerPort: 5432
           env:
             - name: "POSTGRES_PASSWORD"
-              value: "password"
+              value: "secret_password"
             - name: "POSTGRES_USER"
-              value: "username"
+              value: "postgres_username"
             - name: "POSTGRES_DB"
               value: "example_db"
       restartPolicy: Always
