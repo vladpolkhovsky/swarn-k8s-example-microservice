@@ -2,18 +2,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config-dev
-  labels:
-    env: development
 data:
-  spring.datasource.url: jdbc:postgresql://postgres-service:5432/example_db
+  spring.datasource.url: jdbc:postgresql://postgres-service-advanced:5432/example_db
   app.jwt.secret: z1OtmHiiIFG3Wiz7V3IXUHpm2Txgqaf7nISCBlK3CjAwMeYpIfXFxBd4NaQ57m8V
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: app-secrets-dev
-  labels:
-    env: development
 type: kubernetes.io/basic-auth
 stringData:
   username: secret_username
